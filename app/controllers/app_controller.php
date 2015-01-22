@@ -2,26 +2,27 @@
 
 class app_controller{
   
+  var $tpl;
+  var $model;
+  
   function __construct(){
-    
+    $this->tpl='main.html';
+    $this->model=new app_model();
   }
   
   function home($f3,$params){
-    echo View::instance()->render('main.html');
   }
   
   function getUsers($f3,$params){
-    $model=new app_model();
-    $data=$model->getUsers($params);
-    $f3->set('users',$data);
-    echo View::instance()->render('main.html');
+    $f3->set('users',$this->model->getUsers($params));
   }
   
   function getUser($f3,$params){
-    $model=new app_model();
-    $data=$model->getUser($params);
-    $f3->set('one',$data);
-    echo View::instance()->render('main.html');
+    $f3->set('one',$this->model->getUser($params));
+  }
+  
+  function afterroute(){
+    echo View::instance()->render($this->tpl);
   }
   
 

@@ -9,15 +9,30 @@ var $dB;
  } 
  
  function getUsers($params){
-   $users=new DB\SQL\Mapper($this->dB,'wifiloc');
-   return $users->find(array('promo=?',$params['promo']));
+   return $this->getMapper('wifiloc')->find(array('promo=?',$params['promo']));
  }
  
  function getUser($params){
-   $user=new DB\SQL\Mapper($this->dB,'wifiloc');
-   return $user->load(array('id=?',$params['id']));
+   return $this->getMapper('wifiloc')->load(array('id=?',$params['id']));
+ }
+ 
+ private function getMapper($table){
+   return new DB\SQL\Mapper($this->dB,$table);
  }
   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ?>
