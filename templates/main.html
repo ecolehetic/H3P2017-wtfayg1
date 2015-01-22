@@ -41,7 +41,8 @@
   </ul>  
   <ul class="users">
     <?php
-    foreach($datas as $user):
+    if(isset($data)):
+    foreach($data as $user):
     ?>
         <li> 
           <a href="user/<?php echo $user['id'] ?>"><?php echo $user['firstname'].' '.$user['lastname']; ?></a>
@@ -49,6 +50,7 @@
         </li>
     <?php
     endforeach;
+    endif;
     ?>
   </ul>
   </section>
