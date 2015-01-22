@@ -1,6 +1,5 @@
 <?php
 
-
 class app_controller{
   
   function __construct(){
@@ -12,19 +11,20 @@ class app_controller{
   }
   
   function getUsers($f3,$params){
-    $users=new DB\SQL\Mapper($f3->get('dB'),'wifiloc');
-    $data=$users->find(array('promo=?',$params['promo']));
+    $model=new app_model();
+    $data=$model->getUsers($params);
     $f3->set('users',$data);
     echo View::instance()->render('main.html');
   }
   
   function getUser($f3,$params){
-    $user=new DB\SQL\Mapper($f3->get('dB'),'wifiloc');
-    $one=$user->load(array('id=?',$params['id']));
-    $f3->set('one',$one);
+    $model=new app_model();
+    $data=$model->getUser($params);
+    $f3->set('one',$data);
     echo View::instance()->render('main.html');
   }
   
+
   
   
 }
