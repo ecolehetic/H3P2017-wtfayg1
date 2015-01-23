@@ -1,5 +1,7 @@
 <?php
 
+namespace APP\CONTROLLERS;
+
 class app_controller{
   
   private $tpl;
@@ -7,7 +9,7 @@ class app_controller{
   
   function __construct(){
     $this->tpl='main.html';
-    $this->model=new app_model();
+    $this->model=new \APP\MODELS\app_model();
   }
   
   public function home($f3,$params){
@@ -23,12 +25,11 @@ class app_controller{
   }
   
   public function search($f3){
-    $users=$this->model->search($f3->get('POST.name'));
-    $f3->set('users',$users);
+    $f3->set('users',$this->model->search($f3->get('POST.name')));
   }
   
   public function afterroute(){
-    echo View::instance()->render($this->tpl);
+    echo \View::instance()->render($this->tpl);
   }
   
 
