@@ -2,26 +2,32 @@
 
 class app_controller{
   
-  var $tpl;
-  var $model;
+  private $tpl;
+  private $model;
   
   function __construct(){
     $this->tpl='main.html';
     $this->model=new app_model();
   }
   
-  function home($f3,$params){
+  public function home($f3,$params){
+    
   }
   
-  function getUsers($f3,$params){
+  public function getUsers($f3,$params){
     $f3->set('users',$this->model->getUsers($params));
   }
   
-  function getUser($f3,$params){
+  public function getUser($f3,$params){
     $f3->set('one',$this->model->getUser($params));
   }
   
-  function afterroute(){
+  public function search($f3){
+    $users=$this->model->search($f3->get('POST.name'));
+    $f3->set('users',$users);
+  }
+  
+  public function afterroute(){
     echo View::instance()->render($this->tpl);
   }
   
