@@ -32,6 +32,13 @@ class app_controller{
     $this->tpl['async']='partials/users.html';
   }
   
+  
+  public function upload($f3){
+    \Web::instance()->receive(function($file){
+      print_r($file);
+    },true,true);
+  }
+  
   public function afterroute($f3){
     $tpl=$f3->get('AJAX')?$this->tpl['async']:$this->tpl['sync'];
     echo \View::instance()->render($tpl);

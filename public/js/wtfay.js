@@ -10,15 +10,35 @@ for (var i=0;i<filters.length;i++){
 	});
 }
 
+var user=document.getElementById('user');
+user.addEventListener('dragover',function(e){
+	e.preventDefault();
+});
+user.addEventListener('drop',function(e){
+	e.preventDefault();
+	var data=new FormData();
+	var files=e.dataTransfer.files;
+	for(var i in files){
+		data.append('file'+i,files[i]);
+	}
+	async('POST','upload',data,function(xhr){
+		console.log(xhr); 
+	});
+	
+});
+
 var input=document.querySelector('input');
 input.addEventListener('keyup',function(){
 	var str=this.value;
-	var data=new FormData();
-	data.append('name',str);
-	var url=this.parentNode.getAttribute('action');
-	async('POST',url,data,function(xhr){
-		console.log(xhr); 
-	});
+	if(str.length>1){
+		var data=new FormData();
+		data.append('name',str);
+		var url=this.parentNode.getAttribute('action');
+		async('POST',url,data,function(xhr){
+			 document.querySelector('.users').innerHTML=xhr.response;
+		});
+	}
+	
 });
 
 
