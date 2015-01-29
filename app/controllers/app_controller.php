@@ -54,7 +54,7 @@ class app_controller{
         $this->dataset=array('error'=>'no dataset');
       }
       header('Content-Type: application/json');
-      echo json_encode($this->dataset);
+      echo isset($_GET['callback'])?$_GET['callback'].'('.json_encode($this->dataset).')':json_encode($this->dataset);
     }
     else{
       $tpl=$f3->get('AJAX')?$this->tpl['async']:$this->tpl['sync'];
