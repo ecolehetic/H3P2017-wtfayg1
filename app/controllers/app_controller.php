@@ -6,6 +6,7 @@ class app_controller{
   
   private $tpl;
   private $model;
+  private $dataset;
   
   function __construct(){
     $this->tpl=array(
@@ -19,7 +20,8 @@ class app_controller{
   }
   
   public function getUsers($f3,$params){
-    $f3->set('users',$this->model->getUsers($params));
+    $this->dataset=$this->model->getUsers($params);
+    $f3->set('users',$this->dataset);
     $this->tpl['async']='partials/users.html';
   }
   
@@ -40,8 +42,16 @@ class app_controller{
   }
   
   public function afterroute($f3){
-    $tpl=$f3->get('AJAX')?$this->tpl['async']:$this->tpl['sync'];
-    echo \View::instance()->render($tpl);
+    if(isset($_GET['format'])&&$_GET['format']=='json'){
+      $this->dataset=array_map(function($data){return $data->cast();},$this->dataset);
+      header('Content-Type: application/json');
+      echo json_encode($this->dataset);
+    }
+    else{
+      $tpl=$f3->get('AJAX')?$this->tpl['async']:$this->tpl['sync'];
+      echo \View::instance()->render($tpl);
+    }
+    
   }
   
 

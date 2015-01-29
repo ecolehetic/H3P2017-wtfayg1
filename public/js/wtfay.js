@@ -65,3 +65,20 @@ function async(verb,url,datas,callback){
 		xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 		xhr.send(datas);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
