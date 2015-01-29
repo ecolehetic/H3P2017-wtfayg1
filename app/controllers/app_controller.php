@@ -26,7 +26,8 @@ class app_controller{
   }
   
   public function getUser($f3,$params){
-    $f3->set('one',$this->model->getUser($params));
+    $this->dataset=$this->model->getUser($params);
+    $f3->set('one',$this->dataset);
   }
   
   public function search($f3){
@@ -43,7 +44,15 @@ class app_controller{
   
   public function afterroute($f3){
     if(isset($_GET['format'])&&$_GET['format']=='json'){
-      $this->dataset=array_map(function($data){return $data->cast();},$this->dataset);
+      if(is_array($this->dataset)){
+        $this->dataset=array_map(function($data){return $data->cast();},$this->dataset);
+      }
+      elseif(is_object($this->dataset)){
+        $this->dataset=$this->dataset->cast();
+      }
+      else{
+        $this->dataset=array('error'=>'no dataset');
+      }
       header('Content-Type: application/json');
       echo json_encode($this->dataset);
     }
