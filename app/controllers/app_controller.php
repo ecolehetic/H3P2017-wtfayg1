@@ -36,6 +36,19 @@ class app_controller{
   }
   
   
+  public function request($f3){
+    $options=array(
+      'method'=>'GET',
+      'header' => array(
+        'Accept: application/json',
+        'Authorization: token c05569a93130fe8a817455c703d109218eccc1c5'
+      )
+    );
+    $response=\Web::instance()->request('https://api.github.com/repos/fpumir/wtfay/issues',$options);
+    print_r(json_decode($response['body']));
+    exit;
+  }
+  
   public function upload($f3){
     \Web::instance()->receive(function($file){
       print_r($file);
@@ -53,8 +66,14 @@ class app_controller{
       else{
         $this->dataset=array('error'=>'no dataset');
       }
-      header('Content-Type: application/json');
-      echo isset($_GET['callback'])?$_GET['callback'].'('.json_encode($this->dataset).')':json_encode($this->dataset);
+      if(isset($_GET['callback'])){
+        header('Content-Type: application/javascript');
+        echo $_GET['callback'].'('.json_encode($this->dataset).')';
+      }else{
+        header('Content-Type: application/json');
+        echo json_encode($this->dataset);
+      }
+      
     }
     else{
       $tpl=$f3->get('AJAX')?$this->tpl['async']:$this->tpl['sync'];
