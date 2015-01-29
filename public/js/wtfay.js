@@ -10,6 +10,18 @@ for (var i=0;i<filters.length;i++){
 	});
 }
 
+var input=document.querySelector('input');
+input.addEventListener('keyup',function(){
+	var str=this.value;
+	var data=new FormData();
+	data.append('name',str);
+	var url=this.parentNode.getAttribute('action');
+	async('POST',url,data,function(xhr){
+		console.log(xhr); 
+	});
+});
+
+
 
 
 

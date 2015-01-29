@@ -29,6 +29,7 @@ class app_controller{
   
   public function search($f3){
     $f3->set('users',$this->model->search($f3->get('POST.name')));
+    $this->tpl['async']='partials/users.html';
   }
   
   public function afterroute($f3){
