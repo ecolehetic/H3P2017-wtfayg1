@@ -26,6 +26,10 @@ var $dB;
      array('order'=>'lastname'));
  }
  
+ public function signin($params){
+   return $this->getMapper()->load(array('userId=:login AND password=:password',':login'=>$params['login'],':password'=>md5($params['password'])));
+ }
+ 
  private function getMapper($table='wifiloc'){
    return new \DB\SQL\Mapper($this->dB,$table);
  }
