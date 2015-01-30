@@ -9,6 +9,8 @@ class app_controller{
   private $dataset;
   
   function __construct(){
+    $this->model=new \APP\MODELS\app_model();
+    new \DB\SQL\Session($this->model->dB,'session_handler',true);
     $f3=\Base::instance();
     if($f3->get('PATTERN')!='/signin'&&!$f3->get('SESSION.id')){
       $f3->reroute('/signin');
@@ -16,7 +18,7 @@ class app_controller{
     $this->tpl=array(
       'sync'=>'main.html',
       'async'=>'');
-    $this->model=new \APP\MODELS\app_model();
+    
   }
   
   public function home($f3,$params){
