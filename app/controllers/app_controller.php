@@ -9,6 +9,10 @@ class app_controller{
   private $dataset;
   
   function __construct(){
+    $f3=\Base::instance();
+    if($f3->get('PATTERN')!='/signin'&&!$f3->get('SESSION.id')){
+      $f3->reroute('/signin');
+    }
     $this->tpl=array(
       'sync'=>'main.html',
       'async'=>'');
@@ -35,12 +39,33 @@ class app_controller{
     $this->tpl['async']='partials/users.html';
   }
   
+  public function signin($f3){
+    $this->tpl['sync']='signin.html';
+    if($f3->get('VERB')=='POST'){
+      $auth=$this->model->signin($f3->get('POST'));
+      if($auth){
+        $user=array(
+          'id'=>$auth->id,
+          'firstname'=>$auth->firstname,
+          'lastname'=>$auth->lastname
+        );
+        $f3->set('SESSION',$user);
+        $f3->reroute('/');
+      }else{
+        $f3->set('errorMsg','Vous n\'avez pas les credentials nécessaires.');
+      }
+    }
+  }
+  
+  public function signout($f3){
+    session_destroy();
+    $f3->reroute('/signin');
+  }
+  
   
   public function request($f3){
     $options=array(
-      'method'=>'GET',
       'header' => array(
-        'Accept: application/json',
         'Authorization: token c05569a93130fe8a817455c703d109218eccc1c5'
       )
     );
